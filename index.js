@@ -35,6 +35,7 @@ MongoClient.connect('mongodb://localhost/library', (err, client) => {
       } else {
         console.log(result);
       }
+      client.close()
     });
     res.sendStatus(201);
   });
