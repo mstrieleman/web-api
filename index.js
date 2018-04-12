@@ -14,6 +14,18 @@ MongoClient.connect('mongodb://localhost/library', (err, client) => {
   const notes = db.collection('notes');
   app.use(jsonParser);
 
+  app.get('/notes', (req, res) => {
+    if (!req.body) return res.sendStatus(400);
+    notes.find().toArray((err, result) => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log(result);
+      }
+    });
+    res.sendStatus(200);
+  });
+
   app.post('/notes', (req, res) => {
     if (!req.body) return res.sendStatus(400);
     notes.insertOne(req.body, (err, result) => {
@@ -22,9 +34,21 @@ MongoClient.connect('mongodb://localhost/library', (err, client) => {
       } else {
         console.log(result);
       }
-      client.close();
     });
     res.sendStatus(201);
+  });
+
+  app.put('/notes', (req, res) => {
+    if (!req.body) return res.sendStatus(400);
+    const id = req.body.id;
+    notes.updateOne({ _id: id }, { $set: { note: req.body.note } });
+    res.sendStatus(202);
+  });
+
+  app.delete('/notes', (req, res) => {
+    const id = req.body.id;
+    notes.remove({ _id: id });
+    res.sendStatus(200);
   });
 
   const PORT = 3000;
