@@ -39,6 +39,7 @@ MongoClient.connect('mongodb://localhost/library', (err, client) => {
   });
 
   app.put('/notes', (req, res) => {
+    if (!req.body) return res.sendStatus(400);
     const id = req.body.id
     notes.updateOne(
       { "_id" : id },
