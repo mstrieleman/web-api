@@ -45,7 +45,7 @@ MongoClient.connect('mongodb://localhost/library', (err, client) => {
       { "_id" : id },
       { $set: {"note" : req.body.note} }
    );
-    res.sendStatus(201);
+    res.sendStatus(200);
   });
 
   const PORT = 3000;
