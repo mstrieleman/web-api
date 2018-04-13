@@ -40,11 +40,12 @@ MongoClient.connect('mongodb://localhost/library', (err, client) => {
 
   app.put('/notes', (req, res) => {
     if (!req.body) return res.sendStatus(400);
-    const id = req.body.id
-    notes.updateOne(
-      { "_id" : id },
-      { $set: {"note" : req.body.note} }
-   );
+    notes.updateOne({ _id: req.body.id }, { $set: { note: req.body.note } });
+    res.sendStatus(202);
+  });
+
+  app.delete('/notes', (req, res) => {
+    notes.remove({ _id: req.body.id });
     res.sendStatus(200);
   });
 
